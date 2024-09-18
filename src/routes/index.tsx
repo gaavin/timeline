@@ -10,23 +10,19 @@ export const usePostEmbed = routeAction$(async (embed: APIEmbed, ev) => {
   const channelId = String(ev.env.get('DISCORD_CHANNEL_ID'));
   const rest = new REST({ version: '10' }).setToken(token);
 
-  try {
-    const sendEmbedResult = await rest.post(Routes.channelMessages(channelId), {
+  return rest.post(Routes.channelMessages(channelId), {
       body: {
         embeds: [embed],
       },
     }) as Promise<RESTPostAPIChannelMessageResult>;
-    console.log({ sendEmbedResult });
-    return sendEmbedResult;
-  } catch (error) {
-    console.error(error);
-  }
 });
 
 export default component$(() => {
   const action = usePostEmbed();
 
-  // TODO: get this from the database
+  console.log({action})
+
+  // TODO: get this from KV
   const annoyanceCount = 1;
 
   return <div>
